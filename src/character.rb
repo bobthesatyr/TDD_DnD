@@ -9,6 +9,14 @@ class Character
   end
 
   def attack(roll, target)
-     roll > target.armor ? 'hit' : ''
+    deal_damage(target, roll) if hit?(roll, target.armor)
+  end
+
+  def deal_damage(target, roll)
+    target.hp = target.hp - (roll == 20 ? 2 : 1)
+  end
+
+  def hit?(roll, target_armor)
+    roll > target_armor
   end
 end

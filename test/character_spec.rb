@@ -32,11 +32,25 @@ describe Character do
     subject.hp.should eq(5)
   end
 
-  it 'should be able to attack' do
-    beingAttacked = Character.new
+  it 'should damage the attacker by 1 when I hit without crit' do
+    enemy = Character.new
 
-    subject.attack(20, beingAttacked).should eq('hit')
+    subject.attack(13, enemy)
+    enemy.hp.should eq(4)
   end
 
+  it 'not deal damage on a miss' do
+    enemy = Character.new
+
+    subject.attack(1, enemy)
+    enemy.hp.should eq(5)
+  end
+
+  it 'not deal damage on a miss' do
+    enemy = Character.new
+
+    subject.attack(20, enemy)
+    enemy.hp.should eq(3)
+  end
 
 end
