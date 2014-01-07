@@ -9,7 +9,7 @@ class Character
     self.alignment = 'Neutral'
     self.level = 1
     self.abilities = abilities
-    self.armor = 10 + get_modifier(abilities[:dex])
+    self.armor = initialize_armor(abilities)
     self.hp = @hp_per_level + get_modifier(abilities[:con])
     self.attack_bonus = 0
     self.xp = 0
@@ -23,9 +23,9 @@ class Character
     end
   end
 
-  def deal_damage(target, roll)
+  def deal_damage(target, roll, base_damage = 1)
     multiplier = roll == 20 ? critical_multiplier : 1
-    damage = (1 + get_modifier(abilities[:str])) * multiplier
+    damage = (base_damage + get_modifier(abilities[:str])) * multiplier
     damage = 1 if damage < 1
     target.hp -= damage
   end
@@ -63,6 +63,10 @@ class Character
 
   def attack_with_ability
     get_modifier(abilities[:str])
+  end
+
+  def initialize_armor(abilities)
+    10 + get_modifier(abilities[:dex])
   end
 
 end
