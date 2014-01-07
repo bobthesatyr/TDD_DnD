@@ -103,4 +103,12 @@ describe Character do
     subject.get_modifier(20).should eq 5
   end
 
+  it 'should add Strength modifier to hit' do
+    enemy = Character.new
+    subject.abilities[:str] = 18
+
+    subject.attack(6, enemy)
+    enemy.hp.should eq(4)
+  end
+
 end

@@ -10,15 +10,15 @@ class Character
   end
 
   def attack(roll, target)
-    deal_damage(target, roll) if hit?(roll, target.armor)
+    deal_damage(target, roll) if hit?(roll, target.armor, abilities[:str])
   end
 
   def deal_damage(target, roll)
     target.hp = target.hp - (roll == 20 ? 2 : 1)
   end
 
-  def hit?(roll, target_armor)
-    roll > target_armor
+  def hit?(roll, target_armor, strength)
+    roll + get_modifier(strength) >= target_armor
   end
 
   def dead?
