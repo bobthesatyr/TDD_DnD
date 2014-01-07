@@ -2,8 +2,6 @@ require 'rspec'
 require_relative '../src/character'
 
 describe Character do
-
-
   before (:each) do
     subject = Character.new
   end
@@ -26,6 +24,19 @@ describe Character do
     subject.alignment.should eq('Good')
   end
 
+  it 'should have armor that defaults to 10' do
+    subject.armor.should eq(10)
+  end
+
+  it 'should have hit points that start at 5' do
+    subject.hp.should eq(5)
+  end
+
+  it 'should be able to attack' do
+    beingAttacked = Character.new
+
+    subject.attack(20, beingAttacked).should eq('hit')
+  end
 
 
 end
