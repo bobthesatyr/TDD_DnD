@@ -125,8 +125,22 @@ describe Character do
 
   it 'should take Constitution into account when calculating hit points' do
     subject = Character.new({str:10, dex:10, con:15, int:10, wis:10, cha:10})
-
     subject.hp.should eq(7)
   end
+
+  it 'adds XP when a successful attack occurs' do
+    subject.attack(10, @enemy)
+    subject.xp.should eq(10)
+  end
+
+  it 'should have a default level of 1' do
+    subject.level.should eq(1)
+  end
+
+  it 'should increase to level 2 when the character has over 1000 xp' do
+    subject.gain_experience 1000
+    subject.level.should eq(2)
+  end
+
 
 end

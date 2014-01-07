@@ -1,5 +1,5 @@
 class Character
-  attr_accessor :name, :alignment, :armor, :hp, :abilities
+  attr_accessor :name, :alignment, :armor, :hp, :abilities, :xp, :level
 
   def initialize(abilities = {str:10, dex:10, con:10, int:10, wis:10, cha:10})
     self.name = 'Bob'
@@ -7,10 +7,15 @@ class Character
     self.abilities = abilities
     self.armor = 10 + get_modifier(abilities[:dex])
     self.hp = 5 + get_modifier(abilities[:con])
+    self.xp = 0
+    self.level = 1
   end
 
   def attack(roll, target)
-    deal_damage(target, roll) if hit?(roll, target.armor, abilities[:str])
+    if hit?(roll, target.armor, abilities[:str])
+      deal_damage(target, roll)
+      gain_experience(10)
+    end
   end
 
   def deal_damage(target, roll)
@@ -30,6 +35,14 @@ class Character
 
   def get_modifier(score)
     ((score - 10)/2).floor
+  end
+
+  def gain_experience(xp_gain)
+    self.xp = xp + xp_gain
+    if xp >= 1000
+      self.level = level + 1
+      self.xp = xp - 1000
+    end
   end
 
 end
