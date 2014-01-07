@@ -4,6 +4,7 @@ require_relative '../src/character'
 describe Character do
   before (:each) do
     subject = Character.new
+    @enemy = Character.new
   end
 
   it 'should have a character that has a name' do
@@ -33,35 +34,29 @@ describe Character do
   end
 
   it 'should damage the attacker by 1 when I hit without crit' do
-    enemy = Character.new
-
-    subject.attack(13, enemy)
-    enemy.hp.should eq(4)
+    subject.attack(13, @enemy)
+    @enemy.hp.should eq(4)
   end
 
   it 'not deal damage on a miss' do
-    enemy = Character.new
+    @enemy = Character.new
 
-    subject.attack(1, enemy)
-    enemy.hp.should eq(5)
+    subject.attack(1, @enemy)
+    @enemy.hp.should eq(5)
   end
 
   it 'should be dead if damaged to 0 or less' do
-    enemy = Character.new
-
-    subject.attack(13, enemy)
-    subject.attack(20, enemy)
-    subject.attack(13, enemy)
-    subject.attack(20, enemy)
-    enemy.dead?.should eq(true)
+    subject.attack(13, @enemy)
+    subject.attack(20, @enemy)
+    subject.attack(13, @enemy)
+    subject.attack(20, @enemy)
+    @enemy.dead?.should eq(true)
   end
 
   it 'should be alive if damaged but still above 0' do
-    enemy = Character.new
-
-    subject.attack(13, enemy)
-    subject.attack(20, enemy)
-    enemy.dead?.should eq(false)
+    subject.attack(13, @enemy)
+    subject.attack(20, @enemy)
+    @enemy.dead?.should eq(false)
   end
 
   it 'should have default abilities' do
@@ -97,18 +92,41 @@ describe Character do
   end
 
   it 'should add Strength modifier to hit and damage' do
-    enemy = Character.new
     subject.abilities[:str] = 18
 
-    subject.attack(6, enemy)
-    enemy.hp.should eq(0)
+    subject.attack(6, @enemy)
+    @enemy.hp.should eq(0)
   end
 
   it 'should double damage including Strength mod' do
-    enemy = Character.new
     subject.abilities[:str] = 14
 
-    subject.attack(20, enemy)
-    enemy.hp.should eq(-1)
+    subject.attack(20, @enemy)
+    @enemy.hp.should eq(-1)
   end
+
+  it 'deal a minimum of 1 damage on hit' do
+    subject.abilities[:str] = 1
+    subject.attack(15, @enemy)
+    @enemy.hp.should eq(4)
+  end
+
+  it 'should deal a minimum of 1 damage even on a critical' do
+    subject.abilities[:str] = 1
+    subject.attack(20, @enemy)
+    @enemy.hp.should eq(4)
+  end
+
+  it 'should take dexterity into effect when calculating damage' do
+    @enemy = Character.new({str:10, dex:20, con:10, int:10, wis:10, cha:10})
+    subject.attack(10, @enemy)
+    @enemy.hp.should eq(5)
+  end
+
+  it 'should take Constitution into account when calculating hit points' do
+    subject = Character.new({str:10, dex:10, con:15, int:10, wis:10, cha:10})
+
+    subject.hp.should eq(7)
+  end
+
 end

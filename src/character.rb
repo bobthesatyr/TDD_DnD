@@ -1,12 +1,12 @@
 class Character
   attr_accessor :name, :alignment, :armor, :hp, :abilities
 
-  def initialize
+  def initialize(abilities = {str:10, dex:10, con:10, int:10, wis:10, cha:10})
     self.name = 'Bob'
     self.alignment = 'Neutral'
-    self.armor = 10
-    self.hp = 5
-    self.abilities = {str:10, dex:10, con:10, int:10, wis:10, cha:10}
+    self.abilities = abilities
+    self.armor = 10 + get_modifier(abilities[:dex])
+    self.hp = 5 + get_modifier(abilities[:con])
   end
 
   def attack(roll, target)
@@ -14,8 +14,10 @@ class Character
   end
 
   def deal_damage(target, roll)
-    damage = 1 + get_modifier(abilities[:str])
-    target.hp = target.hp - (roll == 20 ? 2 * damage : damage)
+    roll == 20 ? multiplier = 2 : multiplier = 1
+    damage = (1 + get_modifier(abilities[:str])) * multiplier
+    damage = 1 if damage < 1
+    target.hp = target.hp - damage
   end
 
   def hit?(roll, target_armor, strength)
@@ -29,6 +31,5 @@ class Character
   def get_modifier(score)
     ((score - 10)/2).floor
   end
-
 
 end
