@@ -48,8 +48,13 @@ class Character
   def level_up
     self.level += 1
     self.hp += 5 + get_modifier(abilities[:con])
-    self.attack_bonus += 1 if level.even?
+    gain_attack_bonus
     self.xp -= 1000
+  end
+
+  protected
+  def gain_attack_bonus
+    self.attack_bonus += 1 if level.even?
   end
 
 end
