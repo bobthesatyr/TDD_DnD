@@ -46,13 +46,6 @@ describe Character do
     enemy.hp.should eq(5)
   end
 
-  it 'deals damage on a critical' do
-    enemy = Character.new
-
-    subject.attack(20, enemy)
-    enemy.hp.should eq(3)
-  end
-
   it 'should be dead if damaged to 0 or less' do
     enemy = Character.new
 
@@ -103,12 +96,19 @@ describe Character do
     subject.get_modifier(20).should eq 5
   end
 
-  it 'should add Strength modifier to hit' do
+  it 'should add Strength modifier to hit and damage' do
     enemy = Character.new
     subject.abilities[:str] = 18
 
     subject.attack(6, enemy)
-    enemy.hp.should eq(4)
+    enemy.hp.should eq(0)
   end
 
+  it 'should double damage including Strength mod' do
+    enemy = Character.new
+    subject.abilities[:str] = 14
+
+    subject.attack(20, enemy)
+    enemy.hp.should eq(-1)
+  end
 end

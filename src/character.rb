@@ -14,7 +14,8 @@ class Character
   end
 
   def deal_damage(target, roll)
-    target.hp = target.hp - (roll == 20 ? 2 : 1)
+    damage = 1 + get_modifier(abilities[:str])
+    target.hp = target.hp - (roll == 20 ? 2 * damage : damage)
   end
 
   def hit?(roll, target_armor, strength)
