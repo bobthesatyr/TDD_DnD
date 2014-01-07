@@ -1,13 +1,14 @@
 class Character
-  attr_accessor :name, :alignment, :armor, :hp, :abilities, :xp, :level, :attack_bonus
+  attr_accessor :name, :alignment, :armor, :hp, :abilities, :xp, :level, :attack_bonus, :hp_per_level
 
-  def initialize(abilities = {str:10, dex:10, con:10, int:10, wis:10, cha:10})
+  def initialize(abilities = {str:10, dex:10, con:10, int:10, wis:10, cha:10}, hp_per_level =5)
+    self.hp_per_level = hp_per_level
     self.name = 'Bob'
     self.alignment = 'Neutral'
     self.level = 1
     self.abilities = abilities
     self.armor = 10 + get_modifier(abilities[:dex])
-    self.hp = 5 + get_modifier(abilities[:con])
+    self.hp = @hp_per_level + get_modifier(abilities[:con])
     self.attack_bonus = 0
     self.xp = 0
   end
@@ -47,7 +48,7 @@ class Character
 
   def level_up
     self.level += 1
-    self.hp += 5 + get_modifier(abilities[:con])
+    self.hp += hp_per_level + get_modifier(abilities[:con])
     gain_attack_bonus
     self.xp -= 1000
   end

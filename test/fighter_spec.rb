@@ -10,4 +10,10 @@ describe Fighter do
     subject.attack(8, @enemy)
     subject.xp.should eq(10)
   end
+
+  it 'should have 10 base hp per level instead of 5' do
+    subject.hp.should eq 10
+    subject.gain_experience 1000
+    subject.hp.should eq 20
+  end
 end
