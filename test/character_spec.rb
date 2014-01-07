@@ -142,5 +142,22 @@ describe Character do
     subject.level.should eq(2)
   end
 
+  it 'should increase when gaining level' do
+    subject = Character.new({str:10, dex:10, con:15, int:10, wis:10, cha:10})
+    subject.gain_experience 1000
+    subject.hp.should eq(14)
+  end
+
+  it 'adds 1 to the attack roll for every even level' do
+    subject.gain_experience(1000)
+    subject.attack(9,@enemy)
+    subject.xp.should eq(10)
+  end
+
+  it 'should not add 1 to attack bonus when gaining odd levels' do
+    subject.gain_experience(2000)
+    subject.attack(8,@enemy)
+    subject.xp.should eq(0)
+  end
 
 end
