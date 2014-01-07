@@ -20,4 +20,8 @@ class Paladin < Character
     super(target, roll, base_damage)
   end
 
+  def gain_attack_bonus
+    self.attack_bonus += 1
+  end
+
 end

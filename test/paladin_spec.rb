@@ -25,4 +25,9 @@ describe Paladin do
     @enemy.hp.should eq -4
   end
 
+  it 'increases the attack bonus for every level' do
+    subject.gain_experience(3000)
+    subject.attack_bonus.should eq(3)
+  end
+
 end
